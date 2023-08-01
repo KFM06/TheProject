@@ -1,14 +1,19 @@
 import folium
-import streamlit as st
+from streamlit_folium import st_folium, folium_static
 
-from streamlit_folium import st_folium
+m = folium.Map(location=[49.1852, -57.4184], 
+                 zoom_start=3, control_scale=True)
 
-# center on Liberty Bell, add marker
-m = folium.Map(location=[49.1852, -57.4184], zoom_start=16)
-folium.Marker(
-    [49.1852, -57.4184], popup="Deer Lake", tooltip="Deer Lake"
-).add_to(m)
+#Loop through each row in the dataframe
+for i,row in df.iterrows():
+    #Setup the content of the popup
+    iframe = folium.IFrame('Well Name:' + str(row["Well Name"]))
+    
+    #Initialise the popup using the iframe
+    popup = folium.Popup(iframe, min_width=300, max_width=300)
+    
+    #Add each row to the map
+    folium.Marker(location=[row[49.1852],row[-57.4184]],
+                  popup = popup, c=row['Well Name']).add_to(m)
 
-# call to render Folium map in Streamlit, but don't get any data back
-# from the map (so that it won't rerun the app when the user interacts)
-st_folium(m, width=725, returned_objects=[])
+st_data = folium_static(m, width=700)
