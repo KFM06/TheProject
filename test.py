@@ -1,5 +1,5 @@
 import folium
-import st_folium, folium_static
+from streamlit_folium import st_folium, folium_static
 
 m = folium.Map(location=[49.1852, -57.4184], 
                  zoom_start=3, control_scale=True)
